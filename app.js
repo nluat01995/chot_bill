@@ -8,6 +8,8 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const connectDB = require("./database/connectDB");
 const cors = require("cors");
+const open = require("open");
+
 connectDB();
 var app = express();
 
@@ -52,5 +54,12 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
+(function wakeup() {
+  require("open")("https://chotbill6868-a755eac2da51.herokuapp.com/", (err) => {
+    if (err) throw err;
+    console.log("Woke up!");
+    setTimeout(wakeup, 1740000); //29m
+  });
+})();
 
 module.exports = app;
