@@ -141,7 +141,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.get("/don-hang", async (req, res, next) => {
+router.get("/donhang", async (req, res, next) => {
   try {
     let { phoneNumber } = req.query;
     if (phoneNumber) {
