@@ -162,7 +162,7 @@ router.get("/donhang", async (req, res, next) => {
           createdAt: format("dd-MM-yy hh:mm", item.createdAt),
         };
       });
-      res.render("donhang", {
+      res.render("donhang.ejs", {
         title: "Quản lý đơn hàng",
         data: mapData || [],
       });
@@ -183,7 +183,7 @@ router.get("/donhang", async (req, res, next) => {
           createdAt: format("dd-MM-yy hh:mm", item.createdAt),
         };
       });
-      res.render("donhang", {
+      res.render("donhang.ejs", {
         title: "Quản lý đơn hàng",
         data: mapData || [],
       });
