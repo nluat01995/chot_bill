@@ -6,6 +6,57 @@ const asyncForEach = require("async-await-foreach");
 var router = express.Router();
 const _ = require("lodash");
 /* GET users listing. */
+router.get("/donhang", async (req, res, next) => {
+  try {
+    let { phoneNumber } = req.query;
+    if (phoneNumber) {
+      req.session.phone = phoneNumber;
+      const orderList = await Order.find({
+        phone: phoneNumber,
+      })
+        .sort({ createdAt: -1 })
+        .lean();
+
+      const mapData = orderList.map((item) => {
+        return {
+          ...item,
+          orderData: item.orderData
+            .map((item2) => `${item2.code}-${item2.size}-${item2.quantity}`)
+            .join(","),
+          total: item.orderData.reduce((a, b) => a + b.quantity, 0),
+          createdAt: format("dd-MM-yy hh:mm", item.createdAt),
+        };
+      });
+      res.render("admin/donhang", {
+        title: "Quản lý đơn hàng",
+        data: mapData || [],
+      });
+    } else {
+      const orderList = await Order.find({
+        phone: req.session.phone,
+      })
+        .sort({ createdAt: -1 })
+        .lean();
+
+      const mapData = orderList.map((item) => {
+        return {
+          ...item,
+          orderData: item.orderData
+            .map((item2) => `${item2.code}-${item2.size}-${item2.quantity}`)
+            .join(","),
+          total: item.orderData.reduce((a, b) => a + b.quantity, 0),
+          createdAt: format("dd-MM-yy hh:mm", item.createdAt),
+        };
+      });
+      res.render("admin/donhang", {
+        title: "Quản lý đơn hàng",
+        data: mapData || [],
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
 router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
