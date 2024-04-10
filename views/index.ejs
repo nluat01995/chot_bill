@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Thông tin chốt đơn</title>
+    <title><%=title%></title>
     <!-- Link thư viện Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
@@ -11,13 +11,13 @@
     />
 
     <!-- Link CSS tùy chỉnh -->
-    <link href="styles.css" rel="stylesheet" />
+    <!-- <link href="styles.css" rel="stylesheet" /> -->
   </head>
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand" href="#">Phương Mint Store</a>
+        <a class="navbar-brand" href="/">Phương Mint Store</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -33,9 +33,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="/don-hang" id="donHangCuaBan"
-                >Đơn hàng của bạn</a
-              >
+              <a class="nav-link" href="/don-hang">Đơn hàng của bạn</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/" id="donHangCuaBan"
@@ -60,8 +58,9 @@
                 type="text"
                 class="form-control"
                 id="hoTen"
-                name="hoTen"
+                name="fullName"
                 required
+                placeholder="Nhập họ và tên"
               />
             </div>
             <!-- Số điện thoại -->
@@ -71,30 +70,66 @@
                 type="tel"
                 class="form-control"
                 id="soDienThoai"
-                name="soDienThoai"
+                name="phone"
+                placeholder="Vui lòng nhập số điện..."
                 required
               />
             </div>
-            <!-- Mã đơn hàng -->
-            <div class="mb-3">
-              <div class="mb-3">
-                <label for="maDonHang" class="form-label">Mã đơn hàng</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="maDonHang"
-                  name="maDonHang"
-                  required
-                />
+            <div class="container mt-3">
+              <div id="orderForm">
+                <div class="row mb-3">
+                  <div class="col-md-4 col-sm-4">
+                    <label for="maDonHang" class="form-label"
+                      >Mã đơn hàng</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="code[]"
+                      placeholder="Mã đơn hàng vd: 123"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-4 col-sm-4">
+                    <label for="soLuong" class="form-label">Số lượng</label>
+                    <input
+                      type="number"
+                      class="form-control quantity"
+                      name="quantity[]"
+                      placeholder="Nhập số lượng"
+                      value="1"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-4 col-sm-4">
+                    <label for="size" class="form-label">Size</label>
+                    <select class="form-select" name="size[]" required>
+                      <option value="">Chọn kích thước</option>
+                      <option value="S">S</option>
+                      <option value="M">M</option>
+                      <option value="L">L</option>
+                      <option value="XL">XL</option>
+                    </select>
+                  </div>
+                </div>
               </div>
+
+              <button
+                type="button"
+                class="btn btn-primary"
+                onclick="addOrderItem()"
+              >
+                Thêm mã đơn hàng
+              </button>
             </div>
+            <br />
             <!-- Ghi chú -->
             <div class="mb-3">
               <label for="ghiChu" class="form-label">Ghi chú</label>
               <textarea
                 class="form-control"
                 id="ghiChu"
-                name="ghiChu"
+                name="note"
                 rows="3"
               ></textarea>
             </div>
@@ -104,6 +139,8 @@
                 class="form-select form-select-sm mb-3"
                 id="city"
                 aria-label=".form-select-sm"
+                required
+                name="city"
               >
                 <option value="" selected>Chọn tỉnh thành</option>
               </select>
@@ -112,6 +149,8 @@
                 class="form-select form-control form-select-sm mb-3"
                 id="district"
                 aria-label=".form-select-sm"
+                name="district"
+                required
               >
                 <option value="" selected>Chọn quận huyện</option>
               </select>
@@ -119,7 +158,9 @@
               <select
                 class="form-select form-select-sm"
                 id="ward"
+                name="ward"
                 aria-label=".form-select-sm"
+                required
               >
                 <option value="" selected>Chọn phường xã</option>
               </select>
@@ -130,12 +171,13 @@
                 type="text"
                 class="form-control"
                 name="addressDetail"
+                id="addressDetail"
                 placeholder="Số nhà, thôn ấp, xã..."
                 required
               />
             </div>
             <!-- Nút gửi thông tin -->
-            <button type="submit" class="btn btn-danger btn-block">
+            <button type="submit" class="btn btn-block btn-danger">
               Mua Hàng Ngay
             </button>
           </form>
@@ -144,9 +186,40 @@
     </div>
 
     <!-- Link thư viện Bootstrap JS (để sử dụng các tính năng của Bootstrap) -->
+
+    <!-- Link tới Bootstrap JS và jQuery (cần Internet để load Bootstrap và jQuery) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+      function addOrderItem() {
+        const orderItem = `
+          <div class="row mb-3">
+              <div class="col-md-4">
+                  <label for="maDonHang" class="form-label">Mã đơn hàng</label>
+                  <input type="text" class="form-control" name="code[]" placeholder="Mã đơn hàng vd: 123,345,..." required>
+              </div>
+              <div class="col-md-4">
+                  <label for="soLuong" class="form-label">Số lượng</label>
+                  <input type="number" class="form-control quantity" name="quantity[]" placeholder="Nhập số lượng" value="1" required>
+              </div>
+              <div class="col-md-4">
+                  <label for="size" class="form-label">Size</label>
+                  <select class="form-select" name="size[]" required>
+                      <option value="">Chọn kích thước</option>
+                      <option value="S">S</option>
+                      <option value="M">M</option>
+                      <option value="L">L</option>
+                      <option value="XL">XL</option>
+                  </select>
+              </div>
+          </div>
+          `;
+        $("#orderForm").append(orderItem);
+      }
+    </script>
     <script>
       var citis = document.getElementById("city");
       var districts = document.getElementById("district");
@@ -229,6 +302,53 @@
               // Tùy chỉnh xử lý tìm đơn hàng của bạn tại đây (gửi yêu cầu đến server, xử lý dữ liệu, ...)
             });
         });
+    </script>
+    <script>
+      const phoneNumberInput = document.getElementById("soDienThoai");
+      const fullNameInput = document.getElementById("hoTen");
+      const cityInput = document.getElementById("city");
+      const wardInput = document.getElementById("ward");
+      const districtInput = document.getElementById("district");
+      const addressInput = document.getElementById("addressDetail");
+
+      phoneNumberInput.addEventListener("input", async () => {
+        const phoneNumber = phoneNumberInput.value;
+
+        try {
+          const response = await fetch(
+            "http://localhost:3000/get-user-by-phone",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ phone: phoneNumber }),
+            }
+          );
+
+          const data = await response.json();
+
+          if (data) {
+            const {
+              fullName,
+              city,
+              ward,
+              district,
+              addressDetail,
+              districtName,
+            } = data;
+
+            fullNameInput.value = fullName || "";
+            addressInput.value = addressDetail || "";
+          } else {
+            console.log("Không tìm thấy thông tin khách hàng");
+            // Xử lý khi không tìm thấy thông tin khách hàng
+          }
+        } catch (error) {
+          console.error("Lỗi khi gọi API:", error);
+          // Xử lý lỗi khi gọi API
+        }
+      });
     </script>
   </body>
 </html>

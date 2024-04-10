@@ -4,12 +4,8 @@ const orderSchema = new mongoose.Schema(
   {
     fullName: {
       type: String,
-      required: true,
     },
     phone: {
-      type: String,
-    },
-    code: {
       type: String,
     },
     note: {
@@ -18,6 +14,38 @@ const orderSchema = new mongoose.Schema(
     city: {
       type: String,
     },
+    orderData: [
+      {
+        name: {
+          type: String,
+        },
+        price: {
+          type: Number,
+          default: 0,
+        },
+        code: {
+          type: String,
+        },
+        quantity: {
+          type: Number,
+        },
+        size: {
+          type: String,
+        },
+        weight: {
+          type: Number,
+        },
+        length: {
+          type: Number,
+        },
+        width: {
+          type: Number,
+        },
+        height: {
+          type: Number,
+        },
+      },
+    ],
     district: {
       type: String,
     },
@@ -27,10 +55,21 @@ const orderSchema = new mongoose.Schema(
     addressDetail: {
       type: String,
     },
-    items: [],
     isActive: {
+      type: String,
+      default: "DATAODON",
+    },
+    lock: {
       type: Boolean,
-      default: false,
+      default: true,
+    },
+    orderCode: {
+      type: String,
+      default: null,
+    },
+    isFailed: {
+      type: Boolean,
+      default: true,
     },
   },
   {
